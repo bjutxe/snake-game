@@ -6,10 +6,12 @@
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
-  const BLOCK_SIZE = 20;
+  const BLOCK_SIZE = 80;
 
   const FIELD_X = 22;
   const FIELD_Y = 11;
+  
+  const SPEED = 1000 / 2;
   
   canvas.width = BLOCK_SIZE * FIELD_X;
   canvas.height = BLOCK_SIZE * FIELD_Y;
@@ -40,6 +42,7 @@
       if (this.body.length > this.tail) this.body.shift();
     },
   }
+
   const item = {
     x: null,
     y: null,
@@ -75,7 +78,7 @@
   }
   
   init();
-  setInterval(loop, 1000 / 2);
+  setInterval(loop, SPEED);
   
   document.addEventListener('keydown', e => {
     switch(e.key) {
