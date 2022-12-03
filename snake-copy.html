@@ -8,7 +8,7 @@
   
   const BLOCK_SIZE = 80;
 
-  const FIELD_X = 22;
+  const FIELD_X = 20;
   const FIELD_Y = 11;
   
   const SPEED = 1000 / 2;
@@ -64,6 +64,7 @@
     item.x = Math.floor(Math.random() * FIELD_X);
     item.y = Math.floor(Math.random() * FIELD_Y);
   }
+
   const loop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
