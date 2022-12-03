@@ -6,16 +6,17 @@
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
-  canvas.width = 800;
-  canvas.height = 600;
+  const BLOCK_SIZE = 20;
+
+  const FIELD_X = 22;
+  const FIELD_Y = 11;
+  
+  canvas.width = BLOCK_SIZE * FIELD_X;
+  canvas.height = BLOCK_SIZE * FIELD_Y;
   
   canvas.setAttribute('style', 'display:block;margin:auto;background-color: #aaa');
   
   document.body.appendChild(canvas);
-  
-  const BLOCK_SIZE = 20;
-  const FIELD_X = canvas.width / BLOCK_SIZE;
-  const FIELD_Y = canvas.height / BLOCK_SIZE;
   
   const snake = {
     x: null,
@@ -50,8 +51,8 @@
   }
   
   const init = () => {
-    snake.x = FIELD_X / 2;
-    snake.y = FIELD_Y / 2;
+    snake.x = 0;
+    snake.y = FIELD_Y - 1;
     snake.tail = 4;
     snake.body = [];
     snake.dx = 1;
@@ -74,7 +75,7 @@
   }
   
   init();
-  setInterval(loop, 1000 / 3);
+  setInterval(loop, 1000 / 2);
   
   document.addEventListener('keydown', e => {
     switch(e.key) {
