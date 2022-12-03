@@ -32,7 +32,9 @@
       ctx.fillStyle = 'green';
       this.body.forEach(obj => {
         ctx.fillRect(obj.x * GRID, obj.y * GRID, GRID - 2, GRID - 2);
-        if (this.x === obj.x && this.y === obj.y) init();
+        const flg1 = this.x === obj.x && this.y === obj.y;
+        const flg2 = this.x < 0 || this.y < 0 || this.x >= STAGEX || this.y >= STAGEY;
+        if (flg1 || flg2) init();
       })
       if (this.body.length > this.tail) this.body.shift();
     }
@@ -52,6 +54,8 @@
     snake.y = STAGEY / 2;
     snake.tail = 4;
     snake.body = [];
+    snake.dx = 1;
+    snake.dy = 0;
     
     item.x = Math.floor(Math.random() * STAGEX);
     item.y = Math.floor(Math.random() * STAGEY);
@@ -61,11 +65,6 @@
     
     snake.update();
     item.update();
-    
-    if (snake.x < 0)     snake.x = STAGEX-1;
-    if (snake.y < 0)     snake.y = STAGEY-1;
-    if (snake.x > STAGEX) snake.x = 0;
-    if (snake.y > STAGEY) snake.y = 0;
     
     if (snake.x === item.x && snake.y === item.y) {
       snake.tail++;
