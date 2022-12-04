@@ -13,7 +13,7 @@
   
   const SPEED = 1000 / 2;
 
-  const operation = [];
+  let operation = [];
   
   canvas.width = BLOCK_SIZE * FIELD_X;
   canvas.height = BLOCK_SIZE * FIELD_Y;
@@ -31,8 +31,18 @@
     
     update: function() {
       this.body.push({x: this.x, y: this.y});
-      this.x += this.dx;
-      this.y += this.dy;
+
+      if (operation.length) {
+        q = operation.shift();
+        if ((this.dx + q[0] != 0) && (this.dy + q[1] != 0)) {
+          this.dx = q[0]; this.dy = q[1];
+          this.x += this.dx; this.y += this.dy;
+        }
+        operation = [];
+      } else {
+        this.x += this.dx; this.y += this.dy;
+        operation = [];
+      }
 
       ctx.fillStyle = 'green';
       this.body.forEach(obj => {
@@ -86,24 +96,16 @@
   document.addEventListener('keydown', e => {
     switch(e.key) {
       case 'ArrowLeft':
-        if (snake.dx != 1 && snake.dy != 0) {
-          snake.dx = -1; snake.dy = 0;
-        }
+        operation.push([-1, 0]);
         break;
       case 'ArrowRight':
-        if (snake.dx != -1 && snake.dy != 0) {
-          snake.dx = 1; snake.dy = 0;
-        }
+        operation.push([1, 0]);
         break;
       case 'ArrowUp':
-        if (snake.dx != 0 && snake.dy != 1) {
-          snake.dx = 0; snake.dy = -1;
-        }
+        operation.push([0, -1]);
         break;
       case 'ArrowDown':
-        if (snake.dx != 0 && snake.dy != -1) {
-          snake.dx = 0; snake.dy = 1;
-        }
+        operation.push([0, 1]);
         break;
     }
   });
