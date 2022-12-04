@@ -50,7 +50,7 @@
     },
   }
 
-  const item = {
+  const star = {
     x: null,
     y: null,
     
@@ -68,20 +68,20 @@
     snake.dx = 1;
     snake.dy = 0;
     
-    item.x = Math.floor(Math.random() * FIELD_X);
-    item.y = Math.floor(Math.random() * FIELD_Y);
+    star.x = Math.floor(Math.random() * FIELD_X);
+    star.y = Math.floor(Math.random() * FIELD_Y);
   }
 
   const loop = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     snake.update();
-    item.update();
+    star.update();
     
-    if (snake.x === item.x && snake.y === item.y) {
+    if (snake.x === star.x && snake.y === star.y) {
       snake.tail++;
-      item.x = Math.floor(Math.random() * FIELD_X);
-      item.y = Math.floor(Math.random() * FIELD_Y);
+      star.x = Math.floor(Math.random() * FIELD_X);
+      star.y = Math.floor(Math.random() * FIELD_Y);
     }
   }
   
