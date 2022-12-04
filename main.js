@@ -56,9 +56,7 @@ const init = () => {
 
 const loop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  snake.update();
-  star.update();
+  snake.update(); star.update();
   
   if (snake.x === star.x && snake.y === star.y) {
     snake.tail++;
@@ -75,8 +73,7 @@ const direction = () => {
 
   const flg2 = prevdx + q[0] != 0 && prevdy + q[1] != 0;
   if (flg1 && flg2) {
-    snake.dx = q[0];
-    snake.dy = q[1];
+    snake.dx = q[0]; snake.dy = q[1];
   }
 
   const flg3 = Math.abs(prevdx + q[0]) != 2 && Math.abs(prevdy + q[1]) != 2;
