@@ -13,8 +13,6 @@ let operation = [];
 canvas.width = BLOCK_SIZE * FIELD_X;
 canvas.height = BLOCK_SIZE * FIELD_Y;
 
-canvas.setAttribute('style', 'display:block;margin:auto;background-color:#aaa');
-
 document.body.appendChild(canvas);
 
 const snake = {
