@@ -84,15 +84,15 @@ const loop = () => {
 }
 
 const direction = () => {
-  const operationQueue = operation.shift();
-  const flg1 = typeof operationQueue != "undefined";
-  const flg2 = snake.dx + operationQueue[0] != 0 && snake.dy + operationQueue[1] != 0;
+  const q = operation.shift();
+  const flg1 = typeof q != "undefined";
+  const flg2 = snake.dx + q[0] != 0 && snake.dy + q[1] != 0;
   if (flg1 && flg2) {
-    snake.dx = operationQueue[0];
-    snake.dy = operationQueue[1];
+    snake.dx = q[0];
+    snake.dy = q[1];
   }
 
-  const flg3 = Math.abs(snake.dx + operationQueue[0]) != 2 && Math.abs(snake.dy + operationQueue[1]) != 2;
+  const flg3 = Math.abs(snake.dx + q[0]) != 2 && Math.abs(snake.dy + q[1]) != 2;
   if (flg1 && flg3) {
     const [x, y] = nextHead.length == 0 ? [snake.x, snake.y] : nextHead.slice(-1)[0];
     nextHead.push([x + snake.dx, y + snake.dy]);
