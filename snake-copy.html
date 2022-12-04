@@ -33,7 +33,7 @@
       this.body.push({x: this.x, y: this.y});
 
       q = operation.shift();
-      if ((this.dx + q[0] != 0) && (this.dy + q[1] != 0)) {
+      if ((typeof q != "undefined") && (this.dx + q[0] != 0) && (this.dy + q[1] != 0)) {
         this.dx = q[0]; this.dy = q[1];
       }
       this.x += this.dx; this.y += this.dy;
