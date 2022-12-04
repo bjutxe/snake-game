@@ -47,7 +47,7 @@ const star = {
 }
 
 const init = () => {
-  snake.x = 0; snake.y = FIELD_Y - 6;
+  snake.x = 0; snake.y = FIELD_Y - 1;
   snake.tail = 4; snake.body = [];
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
@@ -70,13 +70,16 @@ const loop = () => {
 const direction = () => {
   const q = operation.shift();
   const flg1 = typeof q != "undefined";
-  const flg2 = snake.dx + q[0] != 0 && snake.dy + q[1] != 0;
+
+  const [prevdx, prevdy] = [snake.dx, snake.dy];
+
+  const flg2 = prevdx + q[0] != 0 && prevdy + q[1] != 0;
   if (flg1 && flg2) {
     snake.dx = q[0];
     snake.dy = q[1];
   }
 
-  const flg3 = Math.abs(snake.dx + q[0]) != 2 && Math.abs(snake.dy + q[1]) != 2;
+  const flg3 = Math.abs(prevdx + q[0]) != 2 && Math.abs(prevdy + q[1]) != 2;
   if (flg1 && flg3) {
     const [x, y] = nextHead.length == 0 ? [snake.x, snake.y] : nextHead.slice(-1)[0];
     nextHead.push([x + snake.dx, y + snake.dy]);
