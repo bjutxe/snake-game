@@ -1,16 +1,12 @@
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-
 const BLOCK_SIZE = 80;
-
 const FIELD_X = 20;
 const FIELD_Y = 11;
-
 const SPEED = 1000 / 2.483;
 
+const canvas = document.createElement('canvas');
+const ctx = canvas.getContext('2d');
 canvas.width = BLOCK_SIZE * FIELD_X;
 canvas.height = BLOCK_SIZE * FIELD_Y;
-
 document.body.appendChild(canvas);
 
 const operation = [];
@@ -19,12 +15,8 @@ const nextHead = [];
 const regexKeytype = /Arrow(Left|Right|Up|Down)/
 
 const snake = {
-  x: null,
-  y: null,
-  dx: 1,
-  dy: 0,
-  tail: null,
-  
+  x: null, y: null, dx: 1, dy: 0, tail: null,
+
   update: function() {
     this.body.push({x: this.x, y: this.y});
     const nextQueue = nextHead.shift();
@@ -46,9 +38,8 @@ const snake = {
 }
 
 const star = {
-  x: null,
-  y: null,
-  
+  x: null, y: null,
+
   update: function() {
     ctx.fillStyle = 'red';
     ctx.fillRect(this.x * BLOCK_SIZE + 1, this.y * BLOCK_SIZE + 1, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
@@ -56,18 +47,11 @@ const star = {
 }
 
 const init = () => {
-  snake.x = 0;
-  snake.y = FIELD_Y - 6;
-  snake.tail = 4;
-  snake.body = [];
-  snake.dx = 1;
-  snake.dy = 0;
-  
-  star.x = 10;
-  star.y = 5;
-
-  operation.length = 0;
-  nextHead.length = 0;
+  snake.x = 0; snake.y = FIELD_Y - 6;
+  snake.tail = 4; snake.body = [];
+  snake.dx = 1; snake.dy = 0;
+  star.x = 10; star.y = 5;
+  operation.length = 0; nextHead.length = 0;
 }
 
 const loop = () => {
