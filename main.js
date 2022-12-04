@@ -11,9 +11,9 @@ const SPEED = 1000 / 2.483;
 canvas.width = BLOCK_SIZE * FIELD_X;
 canvas.height = BLOCK_SIZE * FIELD_Y;
 
-let operation = [];
-
 document.body.appendChild(canvas);
+
+let operation = [];
 
 const snake = {
   x: null,
