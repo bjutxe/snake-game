@@ -13,7 +13,7 @@ canvas.height = BLOCK_SIZE * FIELD_Y;
 
 document.body.appendChild(canvas);
 
-let operation = [];
+const operation = [];
 
 const snake = {
   x: null,
@@ -24,13 +24,7 @@ const snake = {
   
   update: function() {
     this.body.push({x: this.x, y: this.y});
-
-    q = operation.shift();
-    if ((typeof q != "undefined") && (this.dx + q[0] != 0) && (this.dy + q[1] != 0)) {
-      this.dx = q[0]; this.dy = q[1];
-    }
     this.x += this.dx; this.y += this.dy;
-    operation = [];
 
     ctx.fillStyle = 'green';
     this.body.forEach(obj => {
@@ -55,7 +49,7 @@ const star = {
 
 const init = () => {
   snake.x = 0;
-  snake.y = FIELD_Y - 1;
+  snake.y = FIELD_Y - 6;
   snake.tail = 4;
   snake.body = [];
   snake.dx = 1;
@@ -78,8 +72,19 @@ const loop = () => {
   }
 }
 
+const direction = () => {
+  const operationQueue = operation.shift();
+  const flg1 = typeof operationQueue != "undefined";
+  const flg2 = snake.dx + operationQueue[0] != 0 && snake.dy + operationQueue[1] != 0;
+  if (flg1 && flg2) {
+    snake.dx = operationQueue[0];
+    snake.dy = operationQueue[1];
+  }
+}
+
 init();
 setInterval(loop, SPEED);
+setInterval(direction, 1000 / 30);
 
 document.addEventListener('keydown', e => {
   switch(e.key) {
