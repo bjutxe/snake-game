@@ -16,6 +16,8 @@ document.body.appendChild(canvas);
 const operation = [];
 const nextHead = [];
 
+const regexKeytype = /Arrow(Left|Right|Up|Down)/
+
 const snake = {
   x: null,
   y: null,
@@ -102,18 +104,12 @@ setInterval(loop, SPEED);
 setInterval(direction, 1000 / 240);
 
 document.addEventListener('keydown', e => {
-  switch(e.key) {
-    case 'ArrowLeft':
-      operation.push([-1, 0]);
-      break;
-    case 'ArrowRight':
-      operation.push([1, 0]);
-      break;
-    case 'ArrowUp':
-      operation.push([0, -1]);
-      break;
-    case 'ArrowDown':
-      operation.push([0, 1]);
-      break;
-  }
+  const regexResult = regexKeytype.exec(e.key);
+  if (!regexResult) return;
+  const k = regexResult[1];
+  operation.push(
+    k == 'Left' ? [-1, 0] :
+    k == 'Right' ? [1, 0] :
+    k == 'Up' ? [0, -1] :
+    [0, 1]);
 });
