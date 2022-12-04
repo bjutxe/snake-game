@@ -30,9 +30,10 @@
     tail: null,
     
     update: function() {
+      debuglog("snakeupdate");
       this.body.push({x: this.x, y: this.y});
 
-      q = operation.shift();
+      let q = operation.shift();
       if ((typeof q != "undefined") && (this.dx + q[0] != 0) && (this.dy + q[1] != 0)) {
         this.dx = q[0]; this.dy = q[1];
       }
@@ -55,6 +56,7 @@
     y: null,
     
     update: function() {
+      debuglog("starupdate");
       ctx.fillStyle = 'red';
       ctx.fillRect(this.x * BLOCK_SIZE + 1, this.y * BLOCK_SIZE + 1, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
     },
@@ -73,6 +75,7 @@
   }
 
   const loop = () => {
+    debuglog("loop");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
     snake.update();
@@ -80,15 +83,43 @@
     
     if (snake.x === star.x && snake.y === star.y) {
       snake.tail++;
-      star.x = Math.floor(Math.random() * FIELD_X);
-      star.y = Math.floor(Math.random() * FIELD_Y);
+      const nxt = nxtstar();
+      star.x = nxt[0];
+      star.y = nxt[1];
     }
+  }
+
+  const nxtstar = () => {
+    debuglog("nxtstar");
+    let x, y = 0;
+    while (true) {
+      x = Math.floor(Math.random() * FIELD_X);
+      y = Math.floor(Math.random() * FIELD_Y);
+      debuglog(`(${x}, ${y})`);
+      if (snake.body.every(point => point.x != x && point.y != y)) {
+        debuglog(`${snake.body}`);
+        break;
+      } else {
+        console.error("collision");
+        debuglog("collision");
+      }
+    }
+    return [x, y];
+  }
+
+  const debuglog = (str) => {
+    const nowtime = new Date();
+    console.log(`${str}: `
+        + ("00" + nowtime.getMinutes()).slice(-2) + ":"
+        + ("00" + nowtime.getSeconds()).slice(-2) + "."
+        + ("000" + nowtime.getMilliseconds()).slice(-3));
   }
   
   init();
   setInterval(loop, SPEED);
   
   document.addEventListener('keydown', e => {
+    debuglog("keydown");
     switch(e.key) {
       case 'ArrowLeft':
         operation.push([-1, 0]);
