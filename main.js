@@ -92,8 +92,7 @@ const direction = () => {
 
   const flg3 = Math.abs(snake.dx + operationQueue[0]) != 2 && Math.abs(snake.dy + operationQueue[1]) != 2;
   if (flg1 && flg3) {
-    const x = nextHead.length == 0 ? snake.x : nextHead.slice(-1)[0][0];
-    const y = nextHead.length == 0 ? snake.y : nextHead.slice(-1)[0][1];
+    const [x, y] = nextHead.length == 0 ? [snake.x, snake.y] : nextHead.slice(-1)[0];
     nextHead.push([x + snake.dx, y + snake.dy]);
   }
 }
