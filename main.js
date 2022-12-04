@@ -14,6 +14,7 @@ canvas.height = BLOCK_SIZE * FIELD_Y;
 document.body.appendChild(canvas);
 
 const operation = [];
+const nextHead = [];
 
 const snake = {
   x: null,
@@ -24,7 +25,12 @@ const snake = {
   
   update: function() {
     this.body.push({x: this.x, y: this.y});
-    this.x += this.dx; this.y += this.dy;
+    const nextQueue = nextHead.shift();
+    if (typeof nextQueue != "undefined") {
+      this.x = nextQueue[0]; this.y = nextQueue[1];
+    } else {
+      this.x += this.dx; this.y += this.dy;
+    }
 
     ctx.fillStyle = 'green';
     this.body.forEach(obj => {
@@ -57,6 +63,9 @@ const init = () => {
   
   star.x = 10;
   star.y = 5;
+
+  operation.length = 0;
+  nextHead.length = 0;
 }
 
 const loop = () => {
@@ -80,11 +89,18 @@ const direction = () => {
     snake.dx = operationQueue[0];
     snake.dy = operationQueue[1];
   }
+
+  const flg3 = Math.abs(snake.dx + operationQueue[0]) != 2 && Math.abs(snake.dy + operationQueue[1]) != 2;
+  if (flg1 && flg3) {
+    const x = nextHead.length == 0 ? snake.x : nextHead.slice(-1)[0][0];
+    const y = nextHead.length == 0 ? snake.y : nextHead.slice(-1)[0][1];
+    nextHead.push([x + snake.dx, y + snake.dy]);
+  }
 }
 
 init();
 setInterval(loop, SPEED);
-setInterval(direction, 1000 / 30);
+setInterval(direction, 1000 / 240);
 
 document.addEventListener('keydown', e => {
   switch(e.key) {
