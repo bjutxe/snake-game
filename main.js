@@ -29,12 +29,11 @@ const snake = {
     ctx.fillStyle = 'green';
     this.body.forEach(obj => {
       ctx.fillRect(obj.x * BLOCK_SIZE + 1, obj.y * BLOCK_SIZE + 1, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
-      const flg1 = this.x === obj.x && this.y === obj.y;
-      const flg2 = this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y;
-      if (flg1 || flg2) init();
+      if (this.x === obj.x && this.y === obj.y) init();
     })
     if (this.body.length > this.tail) this.body.shift();
-  },
+    if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
+},
 }
 
 const star = {
