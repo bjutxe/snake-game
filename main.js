@@ -96,9 +96,5 @@ document.addEventListener('keydown', e => {
   const regexResult = regexKeytype.exec(e.key);
   if (!regexResult) return;
   const k = regexResult[1];
-  operation.push(
-    k == 'Left' ? [-1, 0] :
-    k == 'Right' ? [1, 0] :
-    k == 'Up' ? [0, -1] :
-    [0, 1]);
+  operation.push(k == 'Left' ? [-1, 0] : k == 'Right' ? [1, 0] : k == 'Up' ? [0, -1] : [0, 1]);
 });
