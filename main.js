@@ -39,11 +39,7 @@ const snake = {
 
 const star = {
   x: null, y: null,
-
-  update: function() {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(this.x * BLOCK_SIZE + 1, this.y * BLOCK_SIZE + 1, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
-  },
+  update() {starPaint(this.x, this.y)},
 }
 
 const init = () => {
@@ -81,6 +77,15 @@ const direction = () => {
     const [x, y] = nextHead.length == 0 ? [snake.x, snake.y] : nextHead.slice(-1)[0];
     nextHead.push([x + snake.dx, y + snake.dy]);
   }
+}
+
+const starPaint = (x, y) => {
+  ctx.fillStyle = 'red';
+  const cubeSize = BLOCK_SIZE / 3;
+  ctx.fillRect(x * BLOCK_SIZE + cubeSize, y * BLOCK_SIZE, cubeSize, cubeSize);
+  ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE + cubeSize, cubeSize, cubeSize);
+  ctx.fillRect(x * BLOCK_SIZE + cubeSize * 2, y * BLOCK_SIZE + cubeSize, cubeSize, cubeSize);
+  ctx.fillRect(x * BLOCK_SIZE + cubeSize, y * BLOCK_SIZE + cubeSize * 2, cubeSize, cubeSize);
 }
 
 init();
