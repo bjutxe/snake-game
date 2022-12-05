@@ -42,8 +42,7 @@ const star = {
 }
 
 const init = () => {
-  snake.x = 4; snake.y = FIELD_Y - 1;
-  snake.tail = 4;
+  snake.x = 4; snake.y = FIELD_Y - 1; snake.tail = 4;
   snake.body = [{x: 0, y: 10}, {x: 1, y: 10}, {x: 2, y: 10}, {x: 3, y: 10}];
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
