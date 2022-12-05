@@ -33,7 +33,7 @@ const snake = {
     })
     if (this.body.length > this.tail) this.body.shift();
     if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
-},
+  },
 }
 
 const star = {
