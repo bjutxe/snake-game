@@ -13,6 +13,7 @@ document.body.appendChild(canvas);
 
 const operation = [];
 const nextHead = [];
+const pickStar = [];
 
 const regexKeytype = /Arrow(Left|Right|Up|Down)/
 
@@ -45,6 +46,13 @@ const init = () => {
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
   operation.length = 0; nextHead.length = 0;
+  pickStar.length = 0;
+  for (let row = 0; row < FIELD_Y; row++) {
+    for (let col = 0; col < FIELD_X; col++) {
+      pickStar.push(row * FIELD_X + col);
+    }
+  }
+  pickStar.splice(snake.body[0].y * FIELD_X + snake.body[0].x, 5);
   paint();
 }
 
