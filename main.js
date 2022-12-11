@@ -2,7 +2,7 @@ const BLOCK_SIZE = 80;
 const FIELD_X = 20;
 const FIELD_Y = 11;
 const SPEED = 1000 / 2.483; // 0.300 : 2.483
-const START_HEAD_X = 4;     // 8     : 4
+const START_HEAD_X = 4 ;    // 8     : 4
 const START_HEAD_Y = 10;    // 5     : 10
 
 const canvas = document.createElement('canvas');
@@ -27,7 +27,6 @@ const snake = {
     } else {
       this.x += this.dx; this.y += this.dy;
     }
-
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
     })
@@ -35,29 +34,21 @@ const snake = {
   },
 }
 
-const star = {
-  x: null, y: null,
-  update() {starPaint(this.x, this.y)},
-}
+const star = {x: null, y: null}
 
 const init = () => {
   snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.len = 5;
   snake.body = [
-    {x: snake.x - 4, y: snake.y},
-    {x: snake.x - 3, y: snake.y},
-    {x: snake.x - 2, y: snake.y},
-    {x: snake.x - 1, y: snake.y},
+    {x: snake.x - 4, y: snake.y}, {x: snake.x - 3, y: snake.y},
+    {x: snake.x - 2, y: snake.y}, {x: snake.x - 1, y: snake.y},
   ];
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
   operation.length = 0; nextHead.length = 0;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  starPaint(star.x, star.y);
-  snakePaint(snake.body, snake.x, snake.y);
+  paint();
 }
 
 const loop = () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
   snake.move();
   if (snake.x === star.x && snake.y === star.y) {
     snake.len++;
@@ -65,8 +56,7 @@ const loop = () => {
     star.y = Math.floor(Math.random() * FIELD_Y);
   }
   if (snake.body.length >= snake.len) snake.body.shift();
-  snakePaint(snake.body, snake.x, snake.y);
-  star.update();
+  paint();
 }
 
 const direction = () => {
@@ -80,6 +70,12 @@ const direction = () => {
     const [x, y] = nextHead.length == 0 ? [snake.x, snake.y] : nextHead.slice(-1)[0];
     nextHead.push([x + snake.dx, y + snake.dy]);
   }
+}
+
+const paint = () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  snakePaint(snake.body, snake.x, snake.y);
+  starPaint(star.x, star.y);
 }
 
 const starPaint = (x, y) => {
