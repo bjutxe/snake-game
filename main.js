@@ -26,11 +26,11 @@ const snake = {
       this.x += this.dx; this.y += this.dy;
     }
 
-    snakePaint(this.body, this.tail);
+    if (this.body.length > this.tail) this.body.shift();
+    snakePaint(this.body);
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
     })
-    if (this.body.length > this.tail) this.body.shift();
     if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
   },
 }
@@ -55,14 +55,12 @@ const init = () => {
 
 const loop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  snake.update(); star.update();
-  
   if (snake.x === star.x && snake.y === star.y) {
     snake.tail++;
     star.x = Math.floor(Math.random() * FIELD_X);
     star.y = Math.floor(Math.random() * FIELD_Y);
-    star.update();
   }
+  snake.update(); star.update();
 }
 
 const direction = () => {
@@ -87,23 +85,25 @@ const starPaint = (x, y) => {
   ctx.fillRect(x * BLOCK_SIZE + cubeSize, y * BLOCK_SIZE + cubeSize * 2, cubeSize, cubeSize);
 }
 
-const snakePaint = (body, tail) => {
+const snakePaint = (body) => {
   ctx.fillStyle = 'green';
   body.forEach((it, idx) => {
     ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
-    if (idx != tail) {
-      const [diffx, diffy] = [it.x - body[idx + 1].x, it.y - body[idx + 1].y];
-      if (diffx == 1) {
-        ctx.fillRect(it.x * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
-      } else if (diffx == -1) {
-        ctx.fillRect((it.x + 1) * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
-      } else if (diffy == 1) {
-        ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
-      } else {
-        ctx.fillRect(it.x * BLOCK_SIZE + 10, (it.y + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
-      }
+
+    const nextIt = body[idx + 1];
+    if (typeof nextIt == "undefined") return;
+
+    const [diffx, diffy] = [it.x - nextIt.x, it.y - nextIt.y];
+    if (diffx == 1) {
+      ctx.fillRect(it.x * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+    } else if (diffx == -1) {
+      ctx.fillRect((it.x + 1) * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+    } else if (diffy == 1) {
+      ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+    } else {
+      ctx.fillRect(it.x * BLOCK_SIZE + 10, (it.y + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
     }
-  })
+})
 }
 
 init();
