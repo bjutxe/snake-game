@@ -17,7 +17,7 @@ const nextHead = [];
 const regexKeytype = /Arrow(Left|Right|Up|Down)/
 
 const snake = {
-  x: null, y: null, dx: 1, dy: 0, tail: null,
+  x: null, y: null, dx: 1, dy: 0, len: null,
 
   update: function() {
     this.body.push({x: this.x, y: this.y});
@@ -28,10 +28,8 @@ const snake = {
       this.x += this.dx; this.y += this.dy;
     }
 
-    if (this.body.length > this.tail + 1) this.body.shift();
-    // ctx.fillStyle = 'black';
-    // ctx.fillRect(this.x * BLOCK_SIZE + 10, this.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
-    snakePaint(this.body);
+    if (this.body.length >= this.len) this.body.shift();
+    snakePaint(this.body, this.x, this.y);
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
     })
@@ -45,7 +43,7 @@ const star = {
 }
 
 const init = () => {
-  snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.tail = 4;
+  snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.len = 5;
   snake.body = [
     {x: snake.x - 4, y: snake.y},
     {x: snake.x - 3, y: snake.y},
@@ -55,12 +53,15 @@ const init = () => {
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
   operation.length = 0; nextHead.length = 0;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  starPaint(star.x, star.y);
+  snakePaint(snake.body, snake.x, snake.y);
 }
 
 const loop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   if (snake.x === star.x && snake.y === star.y) {
-    snake.tail++;
+    snake.len++;
     star.x = Math.floor(Math.random() * FIELD_X);
     star.y = Math.floor(Math.random() * FIELD_Y);
   }
@@ -89,25 +90,31 @@ const starPaint = (x, y) => {
   ctx.fillRect(x * BLOCK_SIZE + cubeSize, y * BLOCK_SIZE + cubeSize * 2, cubeSize, cubeSize);
 }
 
-const snakePaint = (body) => {
+const snakePaint = (body, headX, headY) => {
   ctx.fillStyle = 'green';
+  ctx.fillRect(headX * BLOCK_SIZE + 10, headY * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
+  snakePaintJoint(body.slice(-1)[0], headX, headY);
   body.forEach((it, idx) => {
+    ctx.fillStyle = 'green';
     ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
-
     const nextIt = body[idx + 1];
     if (typeof nextIt == "undefined") return;
+    snakePaintJoint(nextIt, it.x, it.y);
+  })
+}
 
-    const [diffx, diffy] = [it.x - nextIt.x, it.y - nextIt.y];
-    if (diffx == 1) {
-      ctx.fillRect(it.x * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
-    } else if (diffx == -1) {
-      ctx.fillRect((it.x + 1) * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
-    } else if (diffy == 1) {
-      ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
-    } else {
-      ctx.fillRect(it.x * BLOCK_SIZE + 10, (it.y + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
-    }
-})
+const snakePaintJoint = (nextIt, itx, ity) => {
+  ctx.fillStyle = 'black';
+  const [diffx, diffy] = [itx - nextIt.x, ity - nextIt.y];
+  if (diffx == 1) {
+    ctx.fillRect(itx * BLOCK_SIZE, ity * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+  } else if (diffx == -1) {
+    ctx.fillRect((itx + 1) * BLOCK_SIZE, ity * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+  } else if (diffy == 1) {
+    ctx.fillRect(itx * BLOCK_SIZE + 10, ity * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+  } else {
+    ctx.fillRect(itx * BLOCK_SIZE + 10, (ity + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+  }
 }
 
 init();
