@@ -95,7 +95,6 @@ const snakePaint = (body, headX, headY) => {
   ctx.fillRect(headX * BLOCK_SIZE + 10, headY * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
   snakePaintJoint(body.slice(-1)[0], headX, headY);
   body.forEach((it, idx) => {
-    ctx.fillStyle = 'green';
     ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
     const nextIt = body[idx + 1];
     if (typeof nextIt == "undefined") return;
@@ -104,7 +103,6 @@ const snakePaint = (body, headX, headY) => {
 }
 
 const snakePaintJoint = (nextIt, itx, ity) => {
-  ctx.fillStyle = 'black';
   const [diffx, diffy] = [itx - nextIt.x, ity - nextIt.y];
   if (diffx == 1) {
     ctx.fillRect(itx * BLOCK_SIZE, ity * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
