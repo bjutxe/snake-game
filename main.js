@@ -26,10 +26,9 @@ const snake = {
       this.x += this.dx; this.y += this.dy;
     }
 
-    ctx.fillStyle = 'green';
-    this.body.forEach(obj => {
-      ctx.fillRect(obj.x * BLOCK_SIZE + 1, obj.y * BLOCK_SIZE + 1, BLOCK_SIZE - 1, BLOCK_SIZE - 1);
-      if (this.x === obj.x && this.y === obj.y) init();
+    snakePaint(this.body, this.tail);
+    this.body.forEach(it => {
+      if (this.x === it.x && this.y === it.y) init();
     })
     if (this.body.length > this.tail) this.body.shift();
     if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
@@ -57,6 +56,7 @@ const loop = () => {
     snake.tail++;
     star.x = Math.floor(Math.random() * FIELD_X);
     star.y = Math.floor(Math.random() * FIELD_Y);
+    star.update();
   }
 }
 
@@ -80,6 +80,25 @@ const starPaint = (x, y) => {
   ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE + cubeSize, cubeSize, cubeSize);
   ctx.fillRect(x * BLOCK_SIZE + cubeSize * 2, y * BLOCK_SIZE + cubeSize, cubeSize, cubeSize);
   ctx.fillRect(x * BLOCK_SIZE + cubeSize, y * BLOCK_SIZE + cubeSize * 2, cubeSize, cubeSize);
+}
+
+const snakePaint = (body, tail) => {
+  ctx.fillStyle = 'green';
+  body.forEach((it, idx) => {
+    ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
+    if (idx != tail) {
+      const [diffx, diffy] = [it.x - body[idx + 1].x, it.y - body[idx + 1].y];
+      if (diffx == 1) {
+        ctx.fillRect(it.x * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+      } else if (diffx == -1) {
+        ctx.fillRect((it.x + 1) * BLOCK_SIZE, it.y * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+      } else if (diffy == 1) {
+        ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+      } else {
+        ctx.fillRect(it.x * BLOCK_SIZE + 10, (it.y + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+      }
+    }
+  })
 }
 
 init();
