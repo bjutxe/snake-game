@@ -1,9 +1,9 @@
 const BLOCK_SIZE = 80;
 const FIELD_X = 20;
 const FIELD_Y = 11;
-const SPEED = 1000 / 0.3;
-const START_HEAD_X = 8;
-const START_HEAD_Y = 5;
+const SPEED = 1000 / 2.483;
+const START_HEAD_X = 4;
+const START_HEAD_Y = 10;
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
