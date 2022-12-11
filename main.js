@@ -1,7 +1,9 @@
 const BLOCK_SIZE = 80;
 const FIELD_X = 20;
 const FIELD_Y = 11;
-const SPEED = 1000 / 2.483;
+const SPEED = 1000 / 0.3;
+const START_HEAD_X = 8;
+const START_HEAD_Y = 5;
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -41,7 +43,7 @@ const star = {
 }
 
 const init = () => {
-  snake.x = 4; snake.y = FIELD_Y - 1; snake.tail = 4;
+  snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.tail = 4;
   snake.body = [
     {x: snake.x - 4, y: snake.y},
     {x: snake.x - 3, y: snake.y},
