@@ -19,7 +19,7 @@ const regexKeytype = /Arrow(Left|Right|Up|Down)/
 const snake = {
   x: null, y: null, dx: 1, dy: 0, len: null,
 
-  update: function() {
+  move: function() {
     this.body.push({x: this.x, y: this.y});
     const nextQueue = nextHead.shift();
     if (typeof nextQueue != "undefined") {
@@ -28,8 +28,6 @@ const snake = {
       this.x += this.dx; this.y += this.dy;
     }
 
-    if (this.body.length >= this.len) this.body.shift();
-    snakePaint(this.body, this.x, this.y);
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
     })
@@ -60,12 +58,15 @@ const init = () => {
 
 const loop = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  snake.move();
   if (snake.x === star.x && snake.y === star.y) {
     snake.len++;
     star.x = Math.floor(Math.random() * FIELD_X);
     star.y = Math.floor(Math.random() * FIELD_Y);
   }
-  snake.update(); star.update();
+  if (snake.body.length >= snake.len) snake.body.shift();
+  snakePaint(snake.body, snake.x, snake.y);
+  star.update();
 }
 
 const direction = () => {
