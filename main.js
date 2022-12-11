@@ -26,7 +26,7 @@ const snake = {
       this.x += this.dx; this.y += this.dy;
     }
 
-    if (this.body.length > this.tail) this.body.shift();
+    if (this.body.length > this.tail + 1) this.body.shift();
     snakePaint(this.body);
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
