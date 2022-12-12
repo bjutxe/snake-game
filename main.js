@@ -1,9 +1,6 @@
-const BLOCK_SIZE = 80;
-const FIELD_X = 20;
-const FIELD_Y = 11;
-const SPEED = 1000 / 2.483; // 0.300 : 2.483
-const START_HEAD_X = 4 ;    // 8     : 4
-const START_HEAD_Y = 10;    // 5     : 10
+const BLOCK_SIZE = 80, SPEED = 1000 / 2.483;
+const FIELD_X = 20, FIELD_Y = 11;
+const START_HEAD_X = 4, START_HEAD_Y = 10;
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -11,10 +8,7 @@ canvas.width = BLOCK_SIZE * FIELD_X;
 canvas.height = BLOCK_SIZE * FIELD_Y;
 document.body.appendChild(canvas);
 
-const operation = [];
-const nextHead = [];
-const pickStar = [];
-
+const operation = [], nextHead = [], pickStar = [];
 const regexKeytype = /Arrow(Left|Right|Up|Down)/
 
 const snake = {
@@ -32,6 +26,9 @@ const snake = {
       if (this.x === it.x && this.y === it.y) init();
     })
     if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
+    const address = this.y * FIELD_X + this.x;
+    const dead = pickStar.findIndex(item => item == address);
+    pickStar.splice(dead, 1);
   },
 }
 
@@ -58,12 +55,17 @@ const init = () => {
 
 const loop = () => {
   snake.move();
-  if (snake.x === star.x && snake.y === star.y) {
-    snake.len++;
-    star.x = Math.floor(Math.random() * FIELD_X);
-    star.y = Math.floor(Math.random() * FIELD_Y);
+  const eaten = snake.x === star.x && snake.y === star.y;
+  if (eaten) snake.len++;
+  if (snake.body.length >= snake.len) {
+    const useful = snake.body.shift();
+    pickStar.push(useful.y * FIELD_X + useful.x);
   }
-  if (snake.body.length >= snake.len) snake.body.shift();
+  if (eaten) {
+    const nextStar = pickStar[Math.floor(Math.random() * pickStar.length)];
+    star.x = nextStar % FIELD_X;
+    star.y = Math.floor(nextStar / FIELD_X);
+  }
   paint();
 }
 
