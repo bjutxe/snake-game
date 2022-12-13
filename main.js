@@ -67,6 +67,7 @@ const loop = () => {
     star.y = Math.floor(nextStar / FIELD_X);
   }
   paint();
+  if (pickStar.length == 1) clearInterval(timerId);
 }
 
 const direction = () => {
@@ -123,7 +124,7 @@ const snakePaintJoint = (nextIt, itx, ity) => {
 }
 
 init();
-setInterval(loop, SPEED);
+const timerId = setInterval(loop, SPEED);
 
 document.addEventListener('keydown', e => {
   const regexResult = regexKeytype.exec(e.key);
