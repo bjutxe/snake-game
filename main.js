@@ -22,13 +22,13 @@ const snake = {
     } else {
       this.x += this.dx; this.y += this.dy;
     }
+    const address = this.y * FIELD_X + this.x;
+    const dead = pickStar.findIndex(item => item == address);
+    pickStar.splice(dead, 1);
     this.body.forEach(it => {
       if (this.x === it.x && this.y === it.y) init();
     })
     if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
-    const address = this.y * FIELD_X + this.x;
-    const dead = pickStar.findIndex(item => item == address);
-    pickStar.splice(dead, 1);
   },
 }
 
