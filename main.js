@@ -1,9 +1,11 @@
 const isSP = navigator.userAgent.match(/iPhone|Android.+Mobile/);
 
 const BLOCK_SIZE = isSP ? 30 : window.screen.availHeight > 912 ? 80 : 70;
-const SPEED = 1000 / 2.483;
 const [FIELD_X, FIELD_Y] = isSP ? [11, 20] : [20, 11];
 const [START_HEAD_X, START_HEAD_Y] = isSP ? [0, 4] : [4, 10];
+const MARGIN = isSP ? 2 : 10;
+
+const SPEED = 1000 / 2.483;
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -117,10 +119,10 @@ const starPaint = (x, y) => {
 
 const snakePaint = (body, headX, headY) => {
   ctx.fillStyle = 'green';
-  ctx.fillRect(headX * BLOCK_SIZE + 10, headY * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
+  ctx.fillRect(headX * BLOCK_SIZE + MARGIN, headY * BLOCK_SIZE + MARGIN, BLOCK_SIZE - MARGIN, BLOCK_SIZE - MARGIN);
   snakePaintJoint(body.slice(-1)[0], headX, headY);
   body.forEach((it, idx) => {
-    ctx.fillRect(it.x * BLOCK_SIZE + 10, it.y * BLOCK_SIZE + 10, BLOCK_SIZE - 10, BLOCK_SIZE - 10);
+    ctx.fillRect(it.x * BLOCK_SIZE + MARGIN, it.y * BLOCK_SIZE + MARGIN, BLOCK_SIZE - MARGIN, BLOCK_SIZE - MARGIN);
     const nextIt = body[idx + 1];
     if (typeof nextIt == "undefined") return;
     snakePaintJoint(nextIt, it.x, it.y);
@@ -130,13 +132,13 @@ const snakePaint = (body, headX, headY) => {
 const snakePaintJoint = (nextIt, itx, ity) => {
   const [diffx, diffy] = [itx - nextIt.x, ity - nextIt.y];
   if (diffx == 1) {
-    ctx.fillRect(itx * BLOCK_SIZE, ity * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+    ctx.fillRect(itx * BLOCK_SIZE, ity * BLOCK_SIZE + MARGIN, MARGIN, BLOCK_SIZE - MARGIN);
   } else if (diffx == -1) {
-    ctx.fillRect((itx + 1) * BLOCK_SIZE, ity * BLOCK_SIZE + 10, 10, BLOCK_SIZE - 10);
+    ctx.fillRect((itx + 1) * BLOCK_SIZE, ity * BLOCK_SIZE + MARGIN, MARGIN, BLOCK_SIZE - MARGIN);
   } else if (diffy == 1) {
-    ctx.fillRect(itx * BLOCK_SIZE + 10, ity * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+    ctx.fillRect(itx * BLOCK_SIZE + MARGIN, ity * BLOCK_SIZE, BLOCK_SIZE - MARGIN, MARGIN);
   } else {
-    ctx.fillRect(itx * BLOCK_SIZE + 10, (ity + 1) * BLOCK_SIZE, BLOCK_SIZE - 10, 10);
+    ctx.fillRect(itx * BLOCK_SIZE + MARGIN, (ity + 1) * BLOCK_SIZE, BLOCK_SIZE - MARGIN, MARGIN);
   }
 }
 
