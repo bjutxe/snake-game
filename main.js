@@ -10,7 +10,8 @@ canvas.height = BLOCK_SIZE * FIELD_Y;
 document.body.appendChild(canvas);
 
 const operation = [], nextHead = [], pickStar = [];
-const regexKeytype = /Arrow(Left|Right|Up|Down)/
+const regexWasd = /Key(W|A|S|D)/
+const regexArrow = /Arrow(Left|Right|Up|Down)/
 
 const snake = {
   x: null, y: null, dx: 1, dy: 0, len: null,
@@ -128,9 +129,15 @@ init();
 const timerId = setInterval(loop, SPEED);
 
 document.addEventListener('keydown', e => {
-  const regexResult = regexKeytype.exec(e.key);
-  if (!regexResult) return;
-  const k = regexResult[1];
-  operation.push(k == 'Left' ? [-1, 0] : k == 'Right' ? [1, 0] : k == 'Up' ? [0, -1] : [0, 1]);
+  const resultWasd = regexWasd.exec(e.code);
+  const resultArrow = regexArrow.exec(e.key);
+  if (!resultWasd && !resultArrow) return;
+  if (resultWasd) {
+    const k = e.key;
+    operation.push(k == 'a' ? [-1, 0] : k == 'd' ? [1, 0] : k == 'w' ? [0, -1] : [0, 1]);
+  } else if (resultArrow) {
+    const k = resultArrow[1];
+    operation.push(k == 'Left' ? [-1, 0] : k == 'Right' ? [1, 0] : k == 'Up' ? [0, -1] : [0, 1]);
+  }
   direction();
 });
