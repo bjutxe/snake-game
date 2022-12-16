@@ -166,6 +166,7 @@ document.addEventListener('touchstart', e => {
 });
 
 document.addEventListener('touchmove', e => {
+  e.preventDefault();
   swipeMoveX = e.changedTouches[0].pageX;
   swipeMoveY = e.changedTouches[0].pageY;
 });
