@@ -1,7 +1,9 @@
-const BLOCK_SIZE = window.screen.availHeight > 912 ? 80 : 70;
+const isSP = navigator.userAgent.match(/iPhone|Android.+Mobile/);
+
+const BLOCK_SIZE = isSP ? 30 : window.screen.availHeight > 912 ? 80 : 70;
 const SPEED = 1000 / 2.483;
-const FIELD_X = 20, FIELD_Y = 11;
-const START_HEAD_X = 4, START_HEAD_Y = 10;
+const [FIELD_X, FIELD_Y] = isSP ? [11, 20] : [20, 11];
+const [START_HEAD_X, START_HEAD_Y] = isSP ? [0, 4] : [4, 10];
 
 const canvas = document.createElement('canvas');
 const ctx = canvas.getContext('2d');
@@ -34,12 +36,7 @@ const star = {x: null, y: null}
 
 const init = () => {
   snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.len = 5;
-  snake.body = [
-    {x: snake.x - 4, y: snake.y}, {x: snake.x - 3, y: snake.y},
-    {x: snake.x - 2, y: snake.y}, {x: snake.x - 1, y: snake.y},
-  ];
-  snake.dx = 1; snake.dy = 0;
-  star.x = 10; star.y = 5;
+  isSP ? initSP() : initPC();
   operation.length = 0; nextHead.length = 0;
   pickStar.length = 0;
   for (let row = 0; row < FIELD_Y; row++) {
@@ -49,6 +46,24 @@ const init = () => {
   }
   pickStar.splice(snake.body[0].y * FIELD_X + snake.body[0].x, 5);
   paint();
+}
+
+const initPC = () => {
+  snake.body = [
+    {x: snake.x - 4, y: snake.y}, {x: snake.x - 3, y: snake.y},
+    {x: snake.x - 2, y: snake.y}, {x: snake.x - 1, y: snake.y},
+  ];
+  snake.dx = 1; snake.dy = 0;
+  star.x = 10; star.y = 5;
+}
+
+const initSP = () => {
+  snake.body = [
+    {x: snake.x, y: snake.y - 4}, {x: snake.x, y: snake.y - 3},
+    {x: snake.x, y: snake.y - 2}, {x: snake.x, y: snake.y - 1},
+  ];
+  snake.dx = 0; snake.dy = 1;
+  star.x = 5; star.y = 10;
 }
 
 const loop = () => {
