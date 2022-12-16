@@ -3,7 +3,7 @@ const isSP = navigator.userAgent.match(/iPhone|Android.+Mobile/);
 const BLOCK_SIZE = isSP ? 30 : window.screen.availHeight > 912 ? 80 : 70;
 const [FIELD_X, FIELD_Y] = isSP ? [11, 20] : [20, 11];
 const [START_HEAD_X, START_HEAD_Y] = isSP ? [0, 4] : [4, 10];
-const MARGIN = isSP ? 2 : 10;
+const MARGIN = isSP ? 3 : 10;
 
 const SPEED = 1000 / 2.483;
 
