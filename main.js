@@ -27,10 +27,6 @@ const snake = {
     const address = this.y * FIELD_X + this.x;
     const dead = pickStar.findIndex(item => item == address);
     pickStar.splice(dead, 1);
-    this.body.forEach(it => {
-      if (this.x === it.x && this.y === it.y) init();
-    })
-    if (this.x < 0 || this.y < 0 || this.x >= FIELD_X || this.y >= FIELD_Y) init();
   },
 }
 
@@ -68,6 +64,10 @@ const loop = () => {
     star.x = nextStar % FIELD_X;
     star.y = Math.floor(nextStar / FIELD_X);
   }
+  snake.body.forEach(it => {
+    if (snake.x === it.x && snake.y === it.y) init();
+  })
+  if (snake.x < 0 || snake.y < 0 || snake.x >= FIELD_X || snake.y >= FIELD_Y) init();
   paint();
   if (pickStar.length == 1) clearInterval(timerId);
 }
