@@ -156,3 +156,31 @@ document.addEventListener('keydown', e => {
   }
   direction();
 });
+
+let swipeStartX, swipeStartY, swipeMoveX, swipeMoveY;
+const swipeDist = 30;
+
+document.addEventListener('touchstart', e => {
+  swipeStartX = e.touches[0].pageX;
+  swipeStartY = e.touches[0].pageY;
+});
+
+document.addEventListener('touchmove', e => {
+  swipeMoveX = e.changedTouches[0].pageX;
+  swipeMoveY = e.changedTouches[0].pageY;
+});
+
+document.addEventListener('touchend', e => {
+  let [opeX, opeY] = [0, 0];
+  const deltaX = swipeMoveX - swipeStartX;
+  const deltaY = swipeMoveY - swipeStartY;
+  if (Math.abs(deltaX) < swipeDist && Math.abs(deltaY) < swipeDist) {
+    return;
+  } else if (Math.abs(deltaX) > swipeDist && Math.abs(deltaY) < swipeDist) {
+    [opeX, opeY] = deltaX > swipeDist ? [1, 0] : [-1, 0];
+  } else if (Math.abs(deltaX) < swipeDist && Math.abs(deltaY) > swipeDist) {
+    [opeX, opeY] = deltaY > swipeDist ? [0, 1] : [0, -1];
+  }
+  operation.push([opeX, opeY]);
+  direction();
+});
