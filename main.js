@@ -171,6 +171,7 @@ document.addEventListener('touchmove', e => {
 });
 
 document.addEventListener('touchend', e => {
+  e.preventDefault();
   let [opeX, opeY] = [0, 0];
   const deltaX = swipeMoveX - swipeStartX;
   const deltaY = swipeMoveY - swipeStartY;
