@@ -177,14 +177,19 @@ document.addEventListener('touchmove', e => {
 document.addEventListener('touchend', e => {
   e.preventDefault();
   let [opeX, opeY] = [0, 0];
-  const deltaX = swipeMoveX - swipeStartX;
-  const deltaY = swipeMoveY - swipeStartY;
-  if (Math.abs(deltaX) < swipeDist && Math.abs(deltaY) < swipeDist) {
+  const [deltaX, deltaY] = [swipeMoveX - swipeStartX, swipeMoveY - swipeStartY];
+  const [absX, absY] = [Math.abs(deltaX), Math.abs(deltaY)];
+  if (absX < swipeDist && absY < swipeDist) {
     return;
-  } else if (Math.abs(deltaX) > swipeDist && Math.abs(deltaY) < swipeDist) {
-    [opeX, opeY] = deltaX > swipeDist ? [1, 0] : [-1, 0];
-  } else if (Math.abs(deltaX) < swipeDist && Math.abs(deltaY) > swipeDist) {
-    [opeX, opeY] = deltaY > swipeDist ? [0, 1] : [0, -1];
+  } else if (absX > swipeDist && absY < swipeDist) {
+    [opeX, opeY] = deltaX > 0 ? [1, 0] : [-1, 0];
+  } else if (absX < swipeDist && absY > swipeDist) {
+    [opeX, opeY] = deltaY > 0 ? [0, 1] : [0, -1];
+  } else {
+    [opeX, opeY] = absX > absY && deltaX > 0 ? [1, 0]
+        : absX > absY && deltaX < 0 ? [-1, 0]
+        : absX < absY && deltaY > 0 ? [0, 1]
+        : [0, -1];
   }
   operation.push([opeX, opeY]);
   direction();
