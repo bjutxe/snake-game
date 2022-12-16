@@ -1,4 +1,5 @@
-const BLOCK_SIZE = 80, SPEED = 1000 / 2.483;
+const BLOCK_SIZE = window.screen.availHeight > 912 ? 80 : 70;
+const SPEED = 1000 / 2.483;
 const FIELD_X = 20, FIELD_Y = 11;
 const START_HEAD_X = 4, START_HEAD_Y = 10;
 
