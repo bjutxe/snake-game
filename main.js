@@ -161,6 +161,7 @@ let swipeStartX, swipeStartY, swipeMoveX, swipeMoveY;
 const swipeDist = 30;
 
 document.addEventListener('touchstart', e => {
+  e.preventDefault();
   swipeStartX = e.touches[0].pageX;
   swipeStartY = e.touches[0].pageY;
 });
