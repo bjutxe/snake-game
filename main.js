@@ -164,13 +164,13 @@ document.addEventListener('touchstart', e => {
   e.preventDefault();
   swipeStartX = e.touches[0].pageX;
   swipeStartY = e.touches[0].pageY;
-});
+}, {passive: false});
 
 document.addEventListener('touchmove', e => {
   e.preventDefault();
   swipeMoveX = e.changedTouches[0].pageX;
   swipeMoveY = e.changedTouches[0].pageY;
-});
+}, {passive: false});
 
 document.addEventListener('touchend', e => {
   e.preventDefault();
@@ -186,4 +186,4 @@ document.addEventListener('touchend', e => {
   }
   operation.push([opeX, opeY]);
   direction();
-});
+}, {passive: false});
