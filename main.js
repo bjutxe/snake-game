@@ -38,7 +38,6 @@ const star = {x: null, y: null}
 
 const init = () => {
   snake.x = START_HEAD_X; snake.y = START_HEAD_Y; snake.len = 5;
-  isSP ? initSP() : initPC();
   operation.length = 0; nextHead.length = 0;
   pickStar.length = 0;
   for (let row = 0; row < FIELD_Y; row++) {
@@ -46,7 +45,7 @@ const init = () => {
       pickStar.push(row * FIELD_X + col);
     }
   }
-  pickStar.splice(snake.body[0].y * FIELD_X + snake.body[0].x, 5);
+  isSP ? initSP() : initPC();
   paint();
 }
 
@@ -57,6 +56,7 @@ const initPC = () => {
   ];
   snake.dx = 1; snake.dy = 0;
   star.x = 10; star.y = 5;
+  pickStar.splice(snake.body[0].y * FIELD_X + snake.body[0].x, 5);
 }
 
 const initSP = () => {
@@ -66,6 +66,12 @@ const initSP = () => {
   ];
   snake.dx = 0; snake.dy = 1;
   star.x = 5; star.y = 10;
+  pickStar.splice(snake.y * FIELD_X + snake.x, 1);
+  snake.body.forEach(it => {
+    const address = it.y * FIELD_X + it.x;
+    const dead = pickStar.findIndex(item => item == address);
+    pickStar.splice(dead, 1);
+  })
 }
 
 const loop = () => {
