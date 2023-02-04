@@ -1,4 +1,3 @@
-// test
 const isSP = navigator.userAgent.match(/iPhone|Android.+Mobile/);
 
 const BLOCK_SIZE = isSP ? 30 : window.screen.availHeight > 912 ? 80 : 70;
