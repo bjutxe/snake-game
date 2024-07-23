@@ -5,7 +5,7 @@ const [FIELD_X, FIELD_Y] = isSP ? [11, 20] : [20, 11];
 const [START_HEAD_X, START_HEAD_Y] = isSP ? [0, 4] : [4, 10];
 const MARGIN = isSP ? 3 : 10;
 
-const SPEED = 1000 / 2.483;
+const SPEED = 1000 / 1.6;
 
 const canvas = document.createElement("canvas");
 const ctx = canvas.getContext("2d");
@@ -14,10 +14,14 @@ canvas.height = BLOCK_SIZE * FIELD_Y;
 document.body.appendChild(canvas);
 
 const operation = [],
-  nextHead = [],
-  pickStar = [];
+  nextHead = [];
+var pickStar = [];
 const regexWasd = /Key(W|A|S|D)/;
 const regexArrow = /Arrow(Left|Right|Up|Down)/;
+const regexOther = /Key(P|R)/;
+
+var loopCounter = 0;
+var isPaused = false;
 
 const snake = {
   x: null,
@@ -36,9 +40,6 @@ const snake = {
       this.x += this.dx;
       this.y += this.dy;
     }
-    const address = this.y * FIELD_X + this.x;
-    const dead = pickStar.findIndex((item) => item == address);
-    pickStar.splice(dead, 1);
   },
 };
 
@@ -50,14 +51,9 @@ const init = () => {
   snake.len = 5;
   operation.length = 0;
   nextHead.length = 0;
-  pickStar.length = 0;
-  for (let row = 0; row < FIELD_Y; row++) {
-    for (let col = 0; col < FIELD_X; col++) {
-      pickStar.push(row * FIELD_X + col);
-    }
-  }
   isSP ? initSP() : initPC();
   paint();
+  loopCounter = 0;
 };
 
 const initPC = () => {
@@ -71,7 +67,6 @@ const initPC = () => {
   snake.dy = 0;
   star.x = 10;
   star.y = 5;
-  pickStar.splice(snake.body[0].y * FIELD_X + snake.body[0].x, 5);
 };
 
 const initSP = () => {
@@ -85,34 +80,50 @@ const initSP = () => {
   snake.dy = 1;
   star.x = 5;
   star.y = 10;
-  pickStar.splice(snake.y * FIELD_X + snake.x, 1);
-  snake.body.forEach((it) => {
-    const address = it.y * FIELD_X + it.x;
-    const dead = pickStar.findIndex((item) => item == address);
-    pickStar.splice(dead, 1);
-  });
 };
 
 const loop = () => {
+  loopCounter++;
   snake.move();
   const eaten = snake.x === star.x && snake.y === star.y;
   if (eaten) snake.len++;
-  if (snake.body.length >= snake.len) {
-    const useful = snake.body.shift();
-    pickStar.push(useful.y * FIELD_X + useful.x);
-  }
+  if (snake.body.length >= snake.len) snake.body.shift();
   if (eaten) {
-    const nextStar = pickStar[Math.floor(Math.random() * pickStar.length)];
+    pickStar.length = 0;
+    for (let row = 0; row < FIELD_Y; row++) {
+      for (let col = 0; col < FIELD_X; col++) {
+        pickStar.push(row * FIELD_X + col);
+      }
+    }
+    let address = snake.y * FIELD_X + snake.x;
+    let dead = pickStar.findIndex((item) => item == address);
+    pickStar.splice(dead, 1);
+    snake.body.forEach((it) => {
+      address = it.y * FIELD_X + it.x;
+      dead = pickStar.findIndex((item) => item == address);
+      pickStar.splice(dead, 1);
+    });
+    var nowPickStar = pickStar[Math.floor(Math.random() * pickStar.length)];
+    const nextStar = nowPickStar;
     star.x = nextStar % FIELD_X;
     star.y = Math.floor(nextStar / FIELD_X);
   }
   snake.body.forEach((it) => {
-    if (snake.x === it.x && snake.y === it.y) init();
+    if (snake.x === it.x && snake.y === it.y) {
+      console.log("head hit body!!!");
+      init();
+    }
+    if (star.x === it.x && star.y === it.y) {
+      console.log("star hit body!!!");
+      init();
+    }
   });
-  if (snake.x < 0 || snake.y < 0 || snake.x >= FIELD_X || snake.y >= FIELD_Y)
+  if (snake.x < 0 || snake.y < 0 || snake.x >= FIELD_X || snake.y >= FIELD_Y) {
+    console.log("hit wall!!!");
     init();
+  }
   paint();
-  if (pickStar.length == 1) clearInterval(timerId);
+  if (pickStar.length == 1) isPaused = true;
 };
 
 const direction = () => {
@@ -211,12 +222,15 @@ const snakePaintJoint = (nextIt, itx, ity) => {
 };
 
 init();
-const timerId = setInterval(loop, SPEED);
+var timerId = setInterval(function () {
+  if (!isPaused) loop();
+}, SPEED);
 
 document.addEventListener("keydown", (e) => {
   const resultWasd = regexWasd.exec(e.code);
   const resultArrow = regexArrow.exec(e.key);
-  if (!resultWasd && !resultArrow) return;
+  const resultOther = regexOther.exec(e.code);
+  if (!resultWasd && !resultArrow && !resultOther) return;
   if (resultWasd) {
     const k = e.key;
     operation.push(
@@ -233,6 +247,11 @@ document.addEventListener("keydown", (e) => {
         ? [0, -1]
         : [0, 1]
     );
+  } else if (resultOther) {
+    isPaused = !isPaused;
+    if (e.code == "KeyR") {
+      init();
+    }
   }
   direction();
 });
